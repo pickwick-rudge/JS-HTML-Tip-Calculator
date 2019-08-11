@@ -1,0 +1,272 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>
+	h4 {
+		font-size: 25px;
+		font-weight: 800px;
+		text-align: center;
+		color: white;
+		border-radius: 20px;
+		margin-top: -1px;
+		margin-bottom: 2px;
+	}
+	
+	.centered {
+		position: fixed;
+		top: 30%;
+		left: 45%;
+		width: 200px;
+		height: 400px;
+		border: 1px solid #1E90FF;
+		border-radius: 12px;
+		margin: 0;
+		background-color: #1E90FF;
+	}
+	
+	.mainBlock {
+		margin: 0px;
+		padding: 0px;
+		background-color: white;
+	}
+	
+	label {
+		font-size: 9px;
+		text-align: left;
+		color: black;
+		opacity: .5;
+		padding: 5px;
+	}
+	
+	.biggerLabel {
+		font-size: 18px;
+		font-weight: bolder;
+		text-align: left;
+		color: black;
+		opacity: .7;
+		padding: 3px;
+		line-height: 10px;
+	}
+	
+	.billInput {
+		font-size: 16px;
+		font-weight: bold;
+		text-align: center;
+		width: 180px;
+		margin: 5px;
+		border-radius: 3px;
+	}
+	
+	.otherInput {
+		font-size: 16px;
+		font-weight: normal;
+		text-align: center;
+		width: 130px;
+		margin: 0px;
+		border-radius: 3px;
+	}
+	
+	#minusButton {
+		background-color: gray;
+		opacity: .4;
+		border-radius: 3px;
+		margin-right: -3px;
+		margin-left: 3px;
+		
+	}
+	
+	#plusButton {
+		background-color: gray;
+		opacity: .4;
+		border-radius: 3px;
+		margin-left: -3px;
+	}
+	
+	#tipOutput1 {
+		font-size: 20px;
+		font-weight: bolder;
+		text-align: right;
+		color: black;
+		width: 100px;
+		float: right;
+	}
+	
+	#tipOutput2 {
+		font-size: 20px;
+		font-weight: bolder;
+		text-align: right;
+		color: black;
+		width: 100px;
+		float: right;
+	}
+	
+	#fullAmountOutPut {
+		font-size: 36px;
+		font-weight: bolder;
+		text-align: center;
+		color: black;
+		width: 120px;
+	}
+</style>
+<script type="text/javascript">
+	//Initialize bill amount
+    var bill_input = 0.0;
+	
+	//Initialize tip percentage, which increments with every button click either up or down by 5%
+	var tip_percentage = 0.5;
+	
+	//Initialize number of people tipping
+	var num_of_people = 0.0;
+	
+	//Function for validation of input fields
+	function validationFunction(bill_input, tip_percentage, num_of_people) {
+		if (bill_input >= 0.0 && bill_input != null && bill_input != "undefined") {
+			if (tip_percentage >= 0.5 && tip_percentage != null && tip_percentage != "undefined") {
+				if (num_of_people >= 0.0 && num_of_people != null && num_of_people != "undefined") {
+					return true;
+				}
+				else {
+					alert("The number of people must be >= 0 and neither null nor undefined.");
+					return false;
+				}
+			}
+			else {
+				alert("The tip percentage must be zero or a positive amount, and may not be null or undefined.");
+				return false;
+			}
+		}
+		else {
+			alert("The bill amount must be >= 0 and neither null nor undefined.");
+			return false;
+		}
+	}	
+	
+	function justCalc(bill_input, tip_percentage, num_of_people) {
+		//do calculations for tip per person, total per person, and full amount
+		var tip_per_person_result = bill_input * tip_percentage;
+		
+		var total_per_person_result = bill_input * tip_percentage * num_of_people;
+		
+		var full_amount_result = bill_input + total_per_person_result;
+	
+		return tip_per_person_result, total_per_person_result, full_amount_result;
+	}	
+
+	//Calculate everything in one function - if any input is changed, call function and recalculate
+	function calcEverythingAndDisplay(bill_input, tip_percentage, num_of_people) {
+	    alert(bill_input);
+		//call validation function to begin with...
+		if (validationFunction(bill_input, tip_percentage, num_of_people)) {
+			if (minusPercentage.click) {
+                //get bill
+			    bill_input = parseFloat(document.getElementById('bill').value);
+
+			    //lower tip percentage variable value by 5%
+			    tip_percentage -= .05;
+
+			    //get num_of_people
+			    num_of_people = parseFloat(document.getElementById('num_of_people').value);
+				
+				//do calculations for tip per person, total per person, and full amount
+				justCalc(bill_input, tip_percentage, num_of_people);
+				
+				//display input and output field data for bill, tip%, number of people, tip per person, total per person, and full amount
+				document.getElementById('bill').innerHTML = "$" + bill_input.toFixed(2);
+				document.getElementById('tip%').innerHTML = tip_percentage.toFixed() + "%";
+				document.getElementById('num_of_people').innerHTML = num_of_people.toFixed();
+				document.getElementById('tipPerPerson').innerHTML = "$" + tip_per_person_result.toFixed(2);
+				document.getElementById('totalPerPerson').innerHTML = "$" + total_per_person_result.toFixed(2);
+				document.getElementById('fullAmount').innerHTML = "$" + full_amount_result.toFixed(2);
+			} else if (plusPercentage.click) {
+			    //get bill
+			    bill_input = parseFloat(document.getElementById('bill').value);
+
+				//increase tip percentage variable value by 5%
+			    tip_percentage += .05;
+
+			    //get num_of_people
+			    num_of_people = parseFloat(document.getElementById('num_of_people').value);
+				
+				//do calculations for tip per person, total per person, and full amount
+				justCalc(bill_input, tip_percentage, num_of_people);
+				
+				//display input and output field data for bill, tip%, number of people, tip per person, total per person, and full amount
+				document.getElementById('bill').innerHTML = "$" + bill_input.toFixed(2);
+				document.getElementById('tip%').innerHTML = tip_percentage.toFixed() + "%";
+				document.getElementById('num_of_people').innerHTML = num_of_people.toFixed();
+				document.getElementById('tipPerPerson').innerHTML = "$" + tip_per_person_result.toFixed(2);
+				document.getElementById('totalPerPerson').innerHTML = "$" + total_per_person_result.toFixed(2);
+				document.getElementById('fullAmount').innerHTML = "$" + full_amount_result.toFixed(2);
+			} else if (minusPerson.click) {
+			    //get bill
+			    bill_input = parseFloat(document.getElementById('bill').value);
+
+			    //get tip percentage 
+			    tip_percentage = parseFloat(document.getElementById('tip%').value);
+
+				//lower number of persons by 1
+				num_of_people -= 1;
+					
+				//do calculations for tip per person, total per person, and full amount
+				justCalc(bill_input, tip_percentage, num_of_people);
+				
+				//display input and output field data for bill, tip%, number of people, tip per person, total per person, and full amount
+				document.getElementById('bill').innerHTML = "$" + bill_input.toFixed(2);
+				document.getElementById('tip%').innerHTML = tip_percentage.toFixed() + "%";
+				document.getElementById('num_of_people').innerHTML = num_of_people.toFixed();
+				document.getElementById('tipPerPerson').innerHTML = "$" + tip_per_person_result.toFixed(2);
+				document.getElementById('totalPerPerson').innerHTML = "$" + total_per_person_result.toFixed(2);
+				document.getElementById('fullAmount').innerHTML = "$" + full_amount_result.toFixed(2);
+			} else if (plusPerson.click) {
+			    //get bill
+			    bill_input = parseFloat(document.getElementById('bill').value);
+
+			    //get tip percentage 
+			    tip_percentage = parseFloat(document.getElementById('tip%').value);
+
+				//increase number of persons by 1
+				num_of_people += 1;
+
+				//do calculations for tip per person, total per person, and full amount
+				justCalc(bill_input, tip_percentage, num_of_people);
+				
+				//display input and output field data for bill, tip%, number of people, tip per person, total per person, and full amount
+				document.getElementById('bill').innerHTML = "$" + bill_input.toFixed(2);
+				document.getElementById('tip%').innerHTML = tip_percentage.toFixed() + "%";
+				document.getElementById('num_of_people').innerHTML = num_of_people.toFixed();
+				document.getElementById('tipPerPerson').innerHTML = "$" + tip_per_person_result.toFixed(2);
+				document.getElementById('totalPerPerson').innerHTML = "$" + total_per_person_result.toFixed(2);
+				document.getElementById('fullAmount').innerHTML = "$" + full_amount_result.toFixed(2);
+			} 
+		}	
+	}
+</script>
+</head>
+<body>
+	<form name="tipCalculator">
+		<div class="centered">
+			<h4>Tip Calculator</h4>
+			<div class="mainBlock">
+				<label>Bill</label>
+				<input name="bill" id="bill" type="text" class="billInput" />
+				<label>Tip %</label>
+				<br/>
+				<input id="minusPercentage" type="button" value="-" onclick="calcEverythingAndDisplay()"/><input name="tip%" id="tip%" type="text" class="otherInput" value="0%" disabled /><input id="plusPercentage" type="button" value="+" onclick="calcEverythingAndDisplay()"/>
+				<label>Number of People</label>
+				<br/>
+				<input id="minusPerson" type="button" value="-" onclick="calcEverythingAndDisplay()"/><input name="num_of_people" id="num_of_people" type="text" class="otherInput" value="0" disabled /><input id="plusPerson" type="button" value="+" onclick="calcEverythingAndDisplay()"/>
+				<br/>
+				<br/>
+				<label class="biggerLabel">Tip</label><br/><label>per person</label><div type="text" id="tipOutput1"></div>
+				<br/><br/>
+				<label class="biggerLabel">Total</label><br/><label>per person</label><div type="text" id="tipOutput2"></div>
+				<br/><br/><br/>
+				<center><label class="biggerLabel">Full Amount</label></center>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<div type="text" id="fullAmountOutPut"></div>
+				<br/><br/>
+			</div>
+		</div>
+	</form>
+</body>
+</html>
