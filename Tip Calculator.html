@@ -83,47 +83,42 @@
 		margin-left: -3px;
 	}
 	
-	#tipOutput1 {
+	#tipPerPerson {
 		font-size: 20px;
 		font-weight: bolder;
-		text-align: right;
 		color: black;
 		width: 100px;
 		float: right;
+        text-align: right;
+        margin-right: 5px;
 	}
 	
-	#tipOutput2 {
+	#totalPerPerson {
 		font-size: 20px;
 		font-weight: bolder;
-		text-align: right;
 		color: black;
 		width: 100px;
 		float: right;
+        text-align: right;
+        margin-right: 5px;
 	}
 	
-	#fullAmountOutPut {
+	#fullAmount {
 		font-size: 36px;
 		font-weight: bolder;
-		text-align: center;
+        float: right;
+		text-align: left;
 		color: black;
 		width: 120px;
+        margin-right: 20px;
 	}
 </style>
 <script type="text/javascript">
-	//Initialize bill amount
-    var bill_input = 0.0;
-	
-	//Initialize tip percentage, which increments with every button click either up or down by 5%
-	var tip_percentage = 0.5;
-	
-	//Initialize number of people tipping
-	var num_of_people = 0.0;
-	
 	//Function for validation of input fields
 	function validationFunction(bill_input, tip_percentage, num_of_people) {
 		if (bill_input >= 0.0 && bill_input != null && bill_input != "undefined") {
-			if (tip_percentage >= 0.5 && tip_percentage != null && tip_percentage != "undefined") {
-				if (num_of_people >= 0.0 && num_of_people != null && num_of_people != "undefined") {
+			if (tip_percentage >= 0.05 && tip_percentage != null && tip_percentage != "undefined") {
+				if (num_of_people >= 1.0 && num_of_people != null && num_of_people != "undefined") {
 					return true;
 				}
 				else {
@@ -144,32 +139,42 @@
 	
 	function justCalc(bill_input, tip_percentage, num_of_people) {
 		//do calculations for tip per person, total per person, and full amount
-		var tip_per_person_result = bill_input * tip_percentage;
+		tip_per_person_result = bill_input * tip_percentage / num_of_people;
 		
-		var total_per_person_result = bill_input * tip_percentage * num_of_people;
+		total_per_person_result = (bill_input / 4) + tip_per_person_result;
 		
-		var full_amount_result = bill_input + total_per_person_result;
-	
-		return tip_per_person_result, total_per_person_result, full_amount_result;
+		full_amount_result = bill_input + (bill_input * tip_percentage);
+
+		return [tip_per_person_result, total_per_person_result, full_amount_result];
 	}	
 
 	//Calculate everything in one function - if any input is changed, call function and recalculate
-	function calcEverythingAndDisplay(bill_input, tip_percentage, num_of_people) {
-	    alert(bill_input);
+	function calcEverythingAndDisplay() {
+	    //Define and initialize all six variables
+	    var bill_input = 0.0;
+	    var tip_percentage = 0.05;
+	    var num_of_people = 1;
+	    var tip_per_person_result = 0.0;
+	    var total_per_person_result = 0.0;
+	    var full_amount_result = 0.0;
+
 		//call validation function to begin with...
-		if (validationFunction(bill_input, tip_percentage, num_of_people)) {
-			if (minusPercentage.click) {
+	    if (validationFunction(bill_input, tip_percentage, num_of_people)) {
+	        if (minusPercentage.click) {
                 //get bill
-			    bill_input = parseFloat(document.getElementById('bill').value);
+	            bill_input = parseFloat(document.getElementById('bill').value);
 
 			    //lower tip percentage variable value by 5%
 			    tip_percentage -= .05;
-
+     
 			    //get num_of_people
 			    num_of_people = parseFloat(document.getElementById('num_of_people').value);
 				
 				//do calculations for tip per person, total per person, and full amount
-				justCalc(bill_input, tip_percentage, num_of_people);
+			    var calcResults = justCalc(bill_input, tip_percentage, num_of_people);
+			    tip_per_person_result = calcResults[0];
+			    total_per_person_result = calcResults[1];
+			    full_amount_result = calcResults[2];
 				
 				//display input and output field data for bill, tip%, number of people, tip per person, total per person, and full amount
 				document.getElementById('bill').innerHTML = "$" + bill_input.toFixed(2);
@@ -249,22 +254,22 @@
 			<h4>Tip Calculator</h4>
 			<div class="mainBlock">
 				<label>Bill</label>
-				<input name="bill" id="bill" type="text" class="billInput" />
+				<input id="bill" type="text" class="billInput" />
 				<label>Tip %</label>
 				<br/>
-				<input id="minusPercentage" type="button" value="-" onclick="calcEverythingAndDisplay()"/><input name="tip%" id="tip%" type="text" class="otherInput" value="0%" disabled /><input id="plusPercentage" type="button" value="+" onclick="calcEverythingAndDisplay()"/>
+				<input id="minusPercentage" type="button" value="-" onclick="calcEverythingAndDisplay()"/><input name="tip%" id="tip%" type="text" class="otherInput" value="5%" disabled /><input id="plusPercentage" type="button" value="+" onclick="calcEverythingAndDisplay()"/>
 				<label>Number of People</label>
 				<br/>
-				<input id="minusPerson" type="button" value="-" onclick="calcEverythingAndDisplay()"/><input name="num_of_people" id="num_of_people" type="text" class="otherInput" value="0" disabled /><input id="plusPerson" type="button" value="+" onclick="calcEverythingAndDisplay()"/>
+				<input id="minusPerson" type="button" value="-" onclick="calcEverythingAndDisplay()"/><input name="num_of_people" id="num_of_people" type="text" class="otherInput" value="1" disabled /><input id="plusPerson" type="button" value="+" onclick="calcEverythingAndDisplay()"/>
 				<br/>
 				<br/>
-				<label class="biggerLabel">Tip</label><br/><label>per person</label><div type="text" id="tipOutput1"></div>
+				<label class="biggerLabel">Tip</label><br/><label>per person</label><div type="text" id="tipPerPerson"></div>
 				<br/><br/>
-				<label class="biggerLabel">Total</label><br/><label>per person</label><div type="text" id="tipOutput2"></div>
+				<label class="biggerLabel">Total</label><br/><label>per person</label><div type="text" id="totalPerPerson"></div>
 				<br/><br/><br/>
 				<center><label class="biggerLabel">Full Amount</label></center>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<div type="text" id="fullAmountOutPut"></div>
-				<br/><br/>
+				<div type="text" id="fullAmount"></div>
+				<br/><br/><br/>
 			</div>
 		</div>
 	</form>
