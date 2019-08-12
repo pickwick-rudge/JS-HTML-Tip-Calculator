@@ -79,7 +79,6 @@
 		border-radius: 3px;
 		margin-left: 5px;
         height: 20px;
-		
 	}
 	
 	#plusPercentage {
@@ -141,7 +140,7 @@
 			<h4>Tip Calculator</h4>
 			<div class="mainBlock">
 				<label>Bill</label>
-				<input id="bill" type="text" class="billInput" placeholder="$0.00"/>
+				<input id="bill" type="text" class="billInput"/>
 				<label>Tip %</label>
 				<br/>
 				<button id="minusPercentage" type="button" onclick="calcEverythingAndDisplay()">-</button><div name="tip%" id="tip%" type="text" class="otherInput"></div><button id="plusPercentage" type="button" onclick="calcEverythingAndDisplay()">+</button>
@@ -161,6 +160,31 @@
 		</div>
 	</form>
 <script type="text/javascript">
+    // Set initial placeholder values
+    document.getElementById('bill').placeholder = '$0.00';
+    document.getElementById('bill').style.color = 'gray';
+    document.getElementById('bill').style.fontWeight = 'bold';
+
+    document.getElementById('tip%').innerHTML = '5%';
+    document.getElementById('tip%').style.color = 'gray';
+    document.getElementById('tip%').style.fontWeight = 'bold';
+
+    document.getElementById('num_of_people').innerHTML = '1';
+    document.getElementById('num_of_people').style.color = 'gray';
+    document.getElementById('num_of_people').style.fontWeight = 'bold';
+
+    document.getElementById('tipPerPerson').innerHTML = '$0.00';
+    document.getElementById('tipPerPerson').style.color = 'black';
+    document.getElementById('tipPerPerson').style.fontWeight = 'bold';
+
+    document.getElementById('totalPerPerson').innerHTML = "$0.00";
+    document.getElementById('totalPerPerson').style.color = 'black';
+    document.getElementById('totalPerPerson').style.fontWeight = 'bold';
+
+    document.getElementById('fullAmount').innerHTML = '$0.00';
+    document.getElementById('fullAmount').style.color = 'black';
+    document.getElementById('fullAmount').style.fontWeight = 'bold';
+
     //Function for validation of input fields
     function validationFunction(bill_input, tip_percentage, num_of_people) {
         if (bill_input >= 0.0 && bill_input != null && bill_input != "undefined") {
