@@ -1,4 +1,7 @@
-﻿<!doctype html>
+﻿<!--Coder: Michael
+    Project: Tip Calculator-->
+
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
@@ -127,7 +130,7 @@
 		text-align: left;
 		color: black;
 		width: 120px;
-        margin-right: 20px;
+        margin-right: 30px;
 	}
 </style>
 
@@ -161,8 +164,8 @@
     //Function for validation of input fields
     function validationFunction(bill_input, tip_percentage, num_of_people) {
         if (bill_input >= 0.0 && bill_input != null && bill_input != "undefined") {
-		    if (tip_percentage >= 5.0 && tip_percentage != null && tip_percentage != "undefined") {
-			    if (num_of_people >= 1.0 && num_of_people != null && num_of_people != "undefined") {
+		    if ((tip_percentage >= 5.0 && tip_percentage <= 100.0) && tip_percentage != null && tip_percentage != "undefined") {
+			    if ((num_of_people >= 1.0 && num_of_people <= 100.0) && num_of_people != null && num_of_people != "undefined") {
 				    return true;
 			    }
 			    else {
@@ -225,9 +228,6 @@
 
                 //do calculations for tip per person, total per person, and full amount
                 var calcResults = justCalc(bill_input, tip_percentage, num_of_people);
-                alert(bill_input);
-                alert(tip_percentage);
-                alert(num_of_people);
 
                 tip_per_person_result = calcResults[0];
                 total_per_person_result = calcResults[1];
